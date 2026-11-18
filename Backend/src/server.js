@@ -1,20 +1,38 @@
-import './config/dns.js';
+
+import "./config/dns.js";
 
 import connectDB from "./config/db.js";
 import express from "express";
 import dotenv from "dotenv";
-import authRoutes from './routes/auth.routes.js'
+import authRoutes from "./routes/auth.routes.js";
 import courseRoutes from "./routes/course.routes.js";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 dotenv.config();
 
+const PORT = process.env.PORT || 5000;
 const app = express();
 
+// Resolve the public directory path
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const publicPath = path.join(__dirname, "../public");
+
+// Middleware
 app.use(express.json());
+app.use(express.static(publicPath));
 
-app.use('/api/auth', authRoutes);
-app.use('/api/courses', courseRoutes);
+// Serve Google OAuth test page
+app.get("/google-test.html", (req, res) => {
+  res.sendFile(path.join(publicPath, "google-test.html"));
+});
 
+// API Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/courses", courseRoutes);
+
+// Health Check
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,
@@ -22,17 +40,18 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// Start Server
 async function startServer() {
   try {
     await connectDB();
+
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
-    console.error(error.message);
+    console.error("Server startup failed:", error.message);
+    process.exit(1);
   }
 }
 
 startServer();
-
-const PORT = process.env.PORT || 5000;

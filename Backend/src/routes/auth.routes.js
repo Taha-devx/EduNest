@@ -2,6 +2,7 @@ import express from "express";
 import {
   registerEducator,
   loginEducator,
+  googleLogin,
 } from "../controllers/auth.controller.js";
 import {
   authenticateUser,
@@ -12,6 +13,7 @@ const router = express.Router();
 
 router.post("/register", registerEducator);
 router.post("/login", loginEducator);
+router.post("/google", googleLogin);
 
 
 router.get(
