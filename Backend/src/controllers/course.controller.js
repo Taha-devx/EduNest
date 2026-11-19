@@ -195,3 +195,27 @@ export const deleteCourse = async (req, res) => {
     });
   }
 };
+
+
+
+export const getPublishedCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({ status: "published" })
+      .select("title description educator createdAt")
+      .populate("educator", "username bio")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      count: courses.length,
+      courses,
+    });
+  } catch (error) {
+    console.error("Get published courses error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};

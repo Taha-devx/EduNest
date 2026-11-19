@@ -1,139 +1,127 @@
 # EduNest – Learning Management System
 
-A full-stack Learning Management System built using the MERN stack.
+A full-stack Learning Management System built using the MERN stack, designed to help educators manage courses and students access learning content.
 
-## Technology Stack
+## Tech Stack
 
-### Frontend
-- React
-- Vite
-- Tailwind CSS
-- shadcn/ui
+**Frontend:** React, Vite, Tailwind CSS, shadcn/ui
 
-### Backend
-- Node.js
-- Express.js
-- MongoDB Atlas
-- Mongoose
+**Backend:** Node.js, Express.js, MongoDB Atlas, Mongoose
 
-### Authentication & Security
-- Google OAuth (Students)
-- Email/Password Authentication (Educators)
-- JWT (JSON Web Tokens)
-- bcrypt (Password Hashing)
-- Zod (Input Validation)
-- Role-Based Access Control (RBAC)
+**Authentication & Security:** Google OAuth, JWT, bcrypt, Zod, RBAC
+
+## Features
+
+### Implemented
+- Educator registration and login using email and password.
+- Student authentication using Google OAuth.
+- JWT-based authentication and role-based authorization.
+- Password hashing using bcrypt.
+- Request validation using Zod.
+- Educators can create, view, update, publish, and delete their courses.
+- Course ownership verification to protect educator resources.
+
+### Upcoming
+- Course sections and lessons management.
+- Student course enrollment.
+- Text and video lessons.
+- MCQ quizzes with scoring and unlimited attempts.
+- Student progress tracking.
+- Frontend integration and deployment.
 
 ## Project Structure
 
 ```text
 LMS/
 ├── Backend/
+│   ├── public/
 │   ├── src/
 │   │   ├── config/
 │   │   ├── controllers/
 │   │   ├── middleware/
 │   │   ├── models/
 │   │   ├── routes/
-│   │   ├── tests/
 │   │   └── server.js
 │   └── package.json
+├── Frontend/
 ├── .gitignore
-└── README.md
+├── README.md
+└── NOTES.md
 ```
-
-## Implemented Features
-
-### Backend
-- Express server setup
-- MongoDB Atlas connection
-- User and Course models
-- Educator registration API
-- Password hashing using bcrypt
-- Request validation using Zod
-- Basic authentication routing
-
-## Implemented Features
-
-### Authentication & Authorization
-- Educator registration using username, email and password.
-- Password hashing using bcrypt.
-- Educator login with JWT generation.
-- JWT-based authentication middleware.
-- Role-Based Access Control (RBAC) for protected routes.
-- User identification through verified JWT tokens.
-- Password hashes excluded from authenticated user responses.
-- Request validation using Zod.
-
-### Course Management
-- Educators can create courses.
-- Educators can retrieve all their own courses.
-- Educators can retrieve individual courses.
-- Educators can update course details.
-- Educators can save courses as drafts or publish them.
-- Educators can delete their own courses.
-- Course ownership verification prevents educators from modifying other educators' courses.
-- Request validation for course creation and updates.
 
 ## API Endpoints
 
 ### Authentication
 
-| Method | Endpoint | Description | Access |
-|---|---|---|---|
-| POST | `/api/auth/register` | Register educator | Public |
-| POST | `/api/auth/login` | Educator login | Public |
-| GET | `/api/auth/profile` | Get authenticated user profile | Authenticated |
-| GET | `/api/auth/educator-only` | Test educator authorization | Educator |
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/register` | Educator registration |
+| POST | `/api/auth/login` | Educator login |
+| POST | `/api/auth/google` | Student Google sign-in |
+| GET | `/api/auth/profile` | Get authenticated user |
 
 ### Course Management
 
-| Method | Endpoint | Description | Access |
-|---|---|---|---|
-| POST | `/api/courses` | Create a course | Educator |
-| GET | `/api/courses/my-courses` | Get educator's courses | Educator |
-| GET | `/api/courses/:id` | Get a specific course | Educator |
-| PUT | `/api/courses/:id` | Update a course | Course Owner |
-| DELETE | `/api/courses/:id` | Delete a course | Course Owner |
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/courses` | Create a course |
+| GET | `/api/courses/my-courses` | Get educator's courses |
+| GET | `/api/courses/:id` | Get a specific course |
+| PUT | `/api/courses/:id` | Update a course |
+| DELETE | `/api/courses/:id` | Delete a course |
 
-**Note:** Course endpoints require a valid JWT and educator role. Operations on individual courses additionally verify course ownership.
+**Note:** Course management endpoints require educator authentication and enforce course ownership.
 
-## Backend Technologies
+## Getting Started
 
-- Node.js
-- Express.js
-- MongoDB Atlas
-- Mongoose
-- JSON Web Tokens (JWT)
-- bcrypt
-- Zod
-- Postman
+### Prerequisites
+- Node.js and npm
+- MongoDB Atlas account
+- Google Cloud OAuth Web application credentials
 
-## Security Measures
+### Backend Setup
 
-- Passwords are hashed before storage using bcrypt.
-- JWT tokens are verified through authentication middleware.
-- Role-based middleware restricts access to authorized users.
-- Course ownership is verified before individual course operations.
-- Request bodies are validated using Zod.
-- Sensitive password fields are excluded from authenticated user responses.
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Taha-devx/EduNest.git
+```
+
+2. Navigate to the backend:
+
+```bash
+cd EduNest/Backend
+```
+
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+4. Create a `.env` file using `.env.example` as a reference:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+GOOGLE_CLIENT_ID=your_google_client_id
+```
+
+5. Start the development server:
+
+```bash
+npm run dev
+```
+
+Backend runs at `http://localhost:5000`.
 
 ## Project Status
 
-Backend development is in progress.
+**Currently under development.**
 
-Completed milestones:
-- Project initialization and database connection.
-- User and course database models.
-- Educator registration and login.
-- JWT authentication and RBAC middleware.
-- Course CRUD controller implementation.
+See [NOTES.md](./NOTES.md) for technical explanations, implementation decisions, debugging notes, and interview preparation.
 
-Upcoming milestones:
-- Course API testing with Postman.
-- Student Google OAuth authentication.
-- Student enrollment functionality.
-- Sections, lessons and quizzes.
-- Student progress tracking.
-- Frontend integration.
-- Deployment and documentation.
+---
+
+Developed as a MERN Stack Developer technical assessment project.

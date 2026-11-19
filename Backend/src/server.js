@@ -6,6 +6,9 @@ import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
 import courseRoutes from "./routes/course.routes.js";
+import sectionRoutes from "./routes/section.routes.js"
+import lessonRoutes from "./routes/lesson.routes.js"
+import enrollmentRoutes from "./routes/enrollment.routes.js"
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -31,6 +34,9 @@ app.get("/google-test.html", (req, res) => {
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/sections", sectionRoutes);
+app.use("/api/lessons", lessonRoutes);
+app.use("/api/enrollments", enrollmentRoutes);
 
 // Health Check
 app.get("/api/health", (req, res) => {
