@@ -122,7 +122,7 @@ export const loginEducator = async (req, res) => {
       success: true,
       message: "Login successful",
       token,
-      educator: {
+      user: {
         id: educator._id,
         username: educator.username,
         email: educator.email,

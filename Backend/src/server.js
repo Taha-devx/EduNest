@@ -11,6 +11,7 @@ import lessonRoutes from "./routes/lesson.routes.js"
 import enrollmentRoutes from "./routes/enrollment.routes.js"
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import cors from "cors"
 
 dotenv.config();
 
@@ -30,6 +31,11 @@ app.use(express.static(publicPath));
 app.get("/google-test.html", (req, res) => {
   res.sendFile(path.join(publicPath, "google-test.html"));
 });
+
+
+app.use(cors({
+  origin: "http://localhost:5173",
+}));
 
 // API Routes
 app.use("/api/auth", authRoutes);
