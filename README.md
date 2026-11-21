@@ -2,7 +2,7 @@
 
 A full-stack Learning Management System built with the MERN stack. Educators can create and manage courses, while students can enroll, access lessons, attempt quizzes, and track their progress.
 
-**Live Demo:** [EduNest](https://edunest-frontend-2q069jhy7-taha-devx.vercel.app/)  
+**Live Demo:** [EduNest](https://edunest-frontend-pi.vercel.app)  
 **GitHub:** [Taha-devx/EduNest](https://github.com/Taha-devx/EduNest)
 
 ## Tech Stack
