@@ -6,16 +6,19 @@ import ProtectedRoute from "./components/auth/ProtectedRoutes";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 
+
+/**Students imports */
 import StudentLayout from "./layouts/StudentLayout";
 import Dashboard from "./pages/student/Dashboard";
 import CourseCatalog from "./pages/student/CourseCatalog";
 import LearningPage from "./pages/student/LearningPage";
 import MyLearning from "./pages/student/MyLearning";
 
-// Temporary educator placeholder
-function EducatorDashboard() {
-  return <h1>Educator Dashboard</h1>;
-}
+/**Educator imports */
+import EducatorLayout from "./layouts/EducatorLayout";
+import DashboardEducator from "./pages/educator/Dashboard-edu";
+import Courses from "./pages/educator/Courses";
+import CourseEditor from "./pages/educator/CourseEditor";
 
 function App() {
   return (
@@ -43,8 +46,15 @@ function App() {
           </Route>
 
           {/* Educator routes */}
+
           <Route element={<ProtectedRoute allowedRole="educator" />}>
-            <Route path="/educator/dashboard" element={<EducatorDashboard />} />
+            <Route path="/educator" element={<EducatorLayout />}>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<DashboardEducator />} />
+              <Route path="courses" element={<Courses />} />
+              <Route path="courses/new" element={<CourseEditor />} />
+              <Route path="courses/:courseId/edit" element={<CourseEditor />} />
+            </Route>
           </Route>
         </Routes>
       </AuthProvider>

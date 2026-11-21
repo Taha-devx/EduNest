@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const data = await getProfile();
         setUser(data.user);
-      } catch (error) {
+      } catch {
         localStorage.removeItem("edunest_token");
         setUser(null);
       } finally {

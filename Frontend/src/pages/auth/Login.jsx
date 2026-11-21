@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Loader2, LockKeyhole, Mail } from "lucide-react";
 
@@ -33,13 +33,16 @@ const Login = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const redirectUser = (user) => {
-    if (user.role === "educator") {
-      navigate("/educator/dashboard", { replace: true });
-    } else {
-      navigate("/student/dashboard", { replace: true });
-    }
-  };
+  const redirectUser = useCallback(
+    (user) => {
+      if (user.role === "educator") {
+        navigate("/educator/dashboard", { replace: true });
+      } else {
+        navigate("/student/dashboard", { replace: true });
+      }
+    },
+    [navigate],
+  );
 
   // Initialize Google Sign-In
   useEffect(() => {
@@ -70,7 +73,7 @@ const Login = () => {
       text: "continue_with",
       width: 320,
     });
-  }, [studentGoogleLogin]);
+  }, [studentGoogleLogin, redirectUser]);
 
   // Educator login
   const handleSubmit = async (e) => {
@@ -91,14 +94,6 @@ const Login = () => {
     }
   };
 
-  {
-    successMessage && (
-      <p className="mb-4 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">
-        {successMessage}
-      </p>
-    );
-  }
-
   return (
     <AuthLayout>
       <Card className="border-slate-200 shadow-sm">
@@ -113,6 +108,12 @@ const Login = () => {
         </CardHeader>
 
         <CardContent className="space-y-5">
+          {successMessage && (
+            <p className="mb-4 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">
+              {successMessage}
+            </p>
+          )}
+
           {/* Student Google sign-in */}
           <div className="space-y-3">
             <p className="text-center text-sm font-medium text-slate-700">

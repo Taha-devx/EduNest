@@ -19,9 +19,6 @@ const MyLearning = () => {
 
   const fetchEnrollments = useCallback(async () => {
     try {
-      setLoading(true);
-      setError("");
-
       const response = await getMyEnrollments();
       setEnrollments(response.enrollments || []);
     } catch (err) {
@@ -33,6 +30,12 @@ const MyLearning = () => {
       setLoading(false);
     }
   }, []);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError("");
+    fetchEnrollments();
+  };
 
   useEffect(() => {
     fetchEnrollments();
@@ -106,7 +109,7 @@ const MyLearning = () => {
           </div>
 
           <button
-            onClick={fetchEnrollments}
+            onClick={handleRetry}
             className="text-sm font-semibold text-red-700 hover:underline"
           >
             Try again

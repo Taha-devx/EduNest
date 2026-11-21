@@ -28,9 +28,6 @@ const CourseCatalog = () => {
 
   // Fetch courses and existing enrollments
   const fetchCourses = useCallback(async () => {
-    setLoading(true);
-    setError("");
-
     try {
       const [courseResult, enrollmentResult] = await Promise.allSettled([
         getPublishedCourses(),
@@ -61,6 +58,12 @@ const CourseCatalog = () => {
       setLoading(false);
     }
   }, []);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError("");
+    fetchCourses();
+  };
 
   useEffect(() => {
     fetchCourses();
@@ -121,7 +124,7 @@ const CourseCatalog = () => {
         <p className="mt-2 text-sm text-slate-500">{error}</p>
 
         <button
-          onClick={fetchCourses}
+          onClick={handleRetry}
           className="mt-5 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700"
         >
           Try Again

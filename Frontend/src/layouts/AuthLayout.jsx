@@ -1,5 +1,7 @@
 import { GraduationCap } from "lucide-react";
 
+const currentYear = new Date().getFullYear();
+
 const AuthLayout = ({ children }) => {
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-10">
@@ -21,7 +23,7 @@ const AuthLayout = ({ children }) => {
         {children}
 
         <p className="mt-6 text-center text-xs text-slate-400">
-          © {new Date().getFullYear()} EduNest. All rights reserved.
+          © {currentYear} EduNest. All rights reserved.
         </p>
       </div>
     </main>

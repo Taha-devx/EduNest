@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -22,10 +22,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchEnrollments = async () => {
-    setLoading(true);
-    setError("");
-
+  const fetchEnrollments = useCallback(async () => {
     try {
       const data = await getMyEnrollments();
       setEnrollments(data.enrollments || []);
@@ -37,11 +34,17 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError("");
+    fetchEnrollments();
   };
 
   useEffect(() => {
     fetchEnrollments();
-  }, []);
+  }, [fetchEnrollments]);
 
   const totalCompletedLessons = enrollments.reduce(
     (total, enrollment) =>
@@ -89,7 +92,7 @@ const Dashboard = () => {
           </div>
 
           <button
-            onClick={fetchEnrollments}
+            onClick={handleRetry}
             className="text-sm font-semibold text-red-700 hover:underline"
           >
             Try again

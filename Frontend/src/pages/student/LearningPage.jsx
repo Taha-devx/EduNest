@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AlertCircle, ArrowLeft, LoaderCircle } from "lucide-react";
 
@@ -20,7 +20,10 @@ const LearningPage = () => {
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [expandedSections, setExpandedSections] = useState({});
 
-  const [loading, setLoading] = useState(true);
+  const [loadedCourseId, setLoadedCourseId] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const loading = refreshing || loadedCourseId !== courseId;
+  const requestIdRef = useRef(0);
   const [error, setError] = useState("");
   const [completionLoading, setCompletionLoading] = useState(false);
 
@@ -40,12 +43,18 @@ const LearningPage = () => {
       ? Math.round((completedLessons.length / totalLessons) * 100)
       : 0;
 
-  const fetchCourseContent = async () => {
-    try {
-      setLoading(true);
-      setError("");
+  const fetchCourseContent = useCallback(async ({ refresh = false } = {}) => {
+    const requestId = ++requestIdRef.current;
 
+    if (refresh) {
+      setRefreshing(true);
+      setError("");
+    }
+
+    try {
       const response = await getEnrolledCourseContent(courseId);
+
+      if (requestId !== requestIdRef.current) return;
 
       setCourse(response.course);
       setSections(response.sections || []);
@@ -59,25 +68,37 @@ const LearningPage = () => {
       const firstLesson = firstSection?.lessons?.[0];
 
       setSelectedLesson(firstLesson || null);
-
-      if (firstSection) {
-        setExpandedSections({
-          [firstSection._id]: true,
-        });
-      }
+      setExpandedSections(firstSection ? { [firstSection._id]: true } : {});
+      setQuizAnswers({});
+      setQuizResult(null);
+      setQuizError("");
+      setError("");
     } catch (err) {
+      if (requestId !== requestIdRef.current) return;
+
+      setCourse(null);
+      setSections([]);
+      setCompletedLessons([]);
+      setSelectedLesson(null);
+      setExpandedSections({});
       setError(
         err.response?.data?.message ||
           "Unable to load course content. Please try again.",
       );
     } finally {
-      setLoading(false);
+      if (requestId === requestIdRef.current) {
+        setLoadedCourseId(courseId);
+        setRefreshing(false);
+      }
     }
-  };
+  }, [courseId]);
 
   useEffect(() => {
     fetchCourseContent();
-  }, [courseId]);
+    return () => {
+      requestIdRef.current += 1;
+    };
+  }, [fetchCourseContent]);
 
   const isLessonCompleted = (lessonId) => completedLessons.includes(lessonId);
 
@@ -285,7 +306,7 @@ const LearningPage = () => {
 
         <div className="mt-6 flex justify-center gap-3">
           <button
-            onClick={fetchCourseContent}
+            onClick={() => fetchCourseContent({ refresh: true })}
             className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
           >
             Try again

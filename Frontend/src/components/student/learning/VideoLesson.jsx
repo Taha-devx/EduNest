@@ -1,5 +1,5 @@
 
-import { AlertCircle, ExternalLink, PlayCircle } from "lucide-react";
+import { AlertCircle, ExternalLink } from "lucide-react";
 
 const getYouTubeEmbedUrl = (url) => {
   if (!url) return "";
