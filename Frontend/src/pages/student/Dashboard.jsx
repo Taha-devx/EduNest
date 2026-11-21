@@ -162,7 +162,7 @@ const Dashboard = () => {
           </div>
 
           <Link
-            to="/student/learning"
+            to="/student/my-learning"
             className="hidden items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-700 sm:flex"
           >
             My Learning
